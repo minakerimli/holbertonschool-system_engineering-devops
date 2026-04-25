@@ -1,0 +1,41 @@
+        USER (Browser)
+              |
+              | 1. www.foobar.com
+              v
+        DNS (A record)
+   foobar.com → 8.8.8.8
+              |
+              v
+        +----------------------+
+        |      SERVER          |
+        |      8.8.8.8         |
+        |                      |
+        |  [ Nginx ]           |  ← Web Server
+        |  [ App Server ]      |  ← Application logic
+        |  [ Codebase ]        |
+        |  [ MySQL DB ]        |  ← Database
+        +----------------------+
+              |
+              v
+        Response back to user
+Infrastructure description
+
+This infrastructure is a simple web stack hosting the website www.foobar.com
+. A user accesses the website through a browser by entering the domain name.
+
+The domain name foobar.com is configured with a www DNS A record that points to the server IP address 8.8.8.8. The DNS system translates the domain name into the server’s IP address so the browser can locate it.
+
+The server (8.8.8.8) hosts all components of the web infrastructure, including a web server (Nginx), an application server, application codebase, and a MySQL database.
+
+The web server (Nginx) receives HTTP requests from users and serves static content or forwards dynamic requests to the application server.
+
+The application server executes the business logic of the application and communicates with the database when data is required.
+
+The database (MySQL) stores and manages application data such as user information and content.
+
+Communication between the user`s computer and the server happens using HTTP/HTTPS over TCP/IP.
+
+Issues with this infrastructure
+Single Point of Failure (SPOF): if the server goes down, the entire website becomes unavailable.
+Maintenance downtime: restarting or updating any component causes the website to be unavailable.
+Lack of scalability: a single server cannot handle high traffic efficiently.
