@@ -1,0 +1,59 @@
+                    USER
+                     |
+                     v
+              HTTPS (SSL/TLS)
+                     |
+        +-----------------------------+
+        |   LOAD BALANCER CLUSTER     |
+        |     HAproxy (2 nodes)       |
+        +-------------+--------------+
+                      |
+          ---------------------------
+          |                         |
+          v                         v
+ +----------------+        +----------------+
+ | Load Balancer  |        | Load Balancer  |
+ |   Node 1       |        |   Node 2       |
+ +----------------+        +----------------+
+                      |
+                      v
+             +--------------------+
+             |   WEB SERVER       |
+             |   (Nginx)          |
+             +--------------------+
+                      |
+                      v
+             +--------------------+
+             | APPLICATION SERVER |
+             +--------------------+
+                      |
+                      v
+             +--------------------+
+             |    DATABASE       |
+             |   (MySQL)         |
+             +--------------------+
+Infrastructure description
+
+This infrastructure is a scaled-up version of a distributed web system designed to improve performance, scalability, and availability.
+
+A user accesses the system using HTTPS, which ensures encrypted communication.
+
+The infrastructure includes a cluster of load balancers (HAproxy). This provides high availability and failover support in case one load balancer fails.
+
+Traffic is distributed from the load balancer cluster to a dedicated web server running Nginx. The web server handles HTTP requests and serves static content.
+
+Requests requiring dynamic processing are forwarded to a separate application server, which executes the business logic of the application.
+
+A dedicated database server is used to store and manage application data using MySQL.
+
+Why additional elements are added
+Load balancer cluster: to eliminate single point of failure and ensure high availability.
+Separate web server: to handle HTTP requests efficiently and serve static content.
+Separate application server: to process business logic independently.
+Separate database server: to isolate data storage and improve performance.
+Component separation explanation
+Web server handles incoming HTTP requests and static content.
+Application server handles business logic and dynamic processing.
+Database server handles data storage and queries.
+
+Separating these components improves scalability, performance, and system maintainability.
