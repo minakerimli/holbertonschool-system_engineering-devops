@@ -1,0 +1,68 @@
+                         USER
+                          |
+                          v
+                   HTTPS (TLS/SSL)
+                          |
+                    +--------------+
+                    | Load Balancer|
+                    |   HAproxy    |
+                    +--------------+
+                     |      |      |
+          -----------       |       -----------
+         v                  v                  v
++----------------+  +----------------+  +----------------+
+|   Server 1     |  |   Server 2     |  |   Server 3     |
+|----------------|  |----------------|  |----------------|
+| Firewall       |  | Firewall       |  | Firewall       |
+| Nginx          |  | Nginx          |  | Nginx          |
+| App Server     |  | App Server     |  | App Server     |
+| Codebase       |  | Codebase       |  | Codebase       |
+| MySQL Replica  |  | MySQL Replica  |  | MySQL Primary |
+| Monitoring     |  | Monitoring     |  | Monitoring     |
++----------------+  +----------------+  +----------------+
+
+            (SSL Certificate at Load Balancer)
+
+                    +-------------------+
+                    | Monitoring System |
+                    | (Sumologic etc.)  |
+                    +-------------------+
+Infrastructure description
+
+This infrastructure is a secured and monitored distributed web system hosting www.foobar.com
+.
+
+A user accesses the website through HTTPS, which ensures encrypted communication using an SSL certificate installed at the load balancer level.
+
+The system includes a load balancer (HAproxy) that distributes traffic across three servers.
+
+Each server is protected by a firewall that controls incoming and outgoing network traffic to improve security.
+
+Each server contains a web server (Nginx), an application server, application codebase, and database components.
+
+The database is configured with one Primary node responsible for write operations and Replica nodes for read operations.
+
+Monitoring clients are installed on each server to collect performance and system metrics. These metrics are sent to a centralized monitoring system such as Sumologic for analysis and alerting.
+
+Firewalls
+
+Firewalls are used to filter network traffic and protect servers from unauthorized access by controlling allowed ports and connections.
+
+HTTPS / SSL
+
+HTTPS is used to encrypt traffic between the user and the website using SSL/TLS, ensuring confidentiality and data integrity.
+
+Monitoring
+
+Monitoring is used to collect system metrics and logs such as CPU usage, memory usage, and request rates. It helps detect system failures and performance issues.
+
+Monitoring agents collect data from each server and send it to a central monitoring platform.
+
+Monitoring QPS
+
+Queries Per Second (QPS) can be monitored by tracking HTTP request rates at the load balancer or web server level using monitoring tools.
+
+Issues with this infrastructure
+SSL termination at the load balancer exposes unencrypted traffic between internal components.
+Having only one MySQL Primary node creates a single point of failure for write operations.
+Running all components (web, app, database) on the same server makes scaling and maintenance difficult.
