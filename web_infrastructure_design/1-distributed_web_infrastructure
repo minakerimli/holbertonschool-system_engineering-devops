@@ -1,0 +1,52 @@
+                 USER (Browser)
+                        |
+                        v
+                 DNS: foobar.com
+                        |
+                        v
+            +------------------------+
+            |     LOAD BALANCER      |
+            |       HAproxy          |
+            |  (Round Robin Algo)    |
+            +-----------+------------+
+                        |
+          --------------|--------------
+          |                             |
+          v                             v
++------------------+        +------------------+
+|     SERVER 1     |        |     SERVER 2     |
+|------------------|        |------------------|
+| Nginx            |        | Nginx            |
+| App Server       |        | App Server       |
+| Codebase         |        | Codebase         |
+|                  |        |                  |
+| MySQL (Primary)  |        | MySQL (Replica)  |
++------------------+        +------------------+
+Infrastructure description
+
+This infrastructure is a distributed web system designed to host www.foobar.com
+ using multiple servers and a load balancer to improve performance and scalability.
+
+A user accesses the website through a browser using the domain name www.foobar.com
+. DNS resolves the domain name to the load balancer.
+
+A load balancer (HAproxy) distributes incoming traffic between two servers using a Round Robin algorithm, ensuring that requests are evenly distributed across both servers.
+
+The load balancer is configured in an Active-Active setup, meaning both servers are actively handling requests at the same time.
+
+Each server contains a web server (Nginx), an application server, application codebase, and a database system.
+
+The database is configured in a Primary-Replica (Master-Slave) cluster. The Primary database handles write operations, while the Replica database receives replicated data and handles read operations to improve performance.
+
+Load balancer algorithm
+
+The load balancer uses the Round Robin algorithm, where incoming requests are distributed sequentially across available servers in order.
+
+Database role separation
+
+The Primary node is responsible for all write operations, while the Replica node is used for read operations and is synchronized with the Primary.
+
+Issues with this infrastructure
+Single Point of Failure: the load balancer is a SPOF, and database failure can impact the system.
+Security issues: no firewall and no HTTPS encryption.
+No monitoring system is implemented to track performance or failures.
